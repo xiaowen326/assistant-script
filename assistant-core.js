@@ -18,7 +18,7 @@ function getTokenFromCookies() {
 
 function validateToken() {
     if (!TOKEN) {
-        TOKEN = getTokenFromCookies() || GM_getValue('yixin_token', '') || TOKEN;
+        TOKEN = getTokenFromCookies() || window.__GM_getValue('yixin_token', '') || TOKEN;
     }
     IS_TOKEN_VALID = !!TOKEN;
     return IS_TOKEN_VALID;
@@ -2818,7 +2818,7 @@ function setToken() {
     const newToken = showPrompt('设置Token', '请输入新的Token值:');
     if (newToken) {
         TOKEN = newToken;
-        GM_setValue('yixin_token', newToken);  // 持久化到油猴存储
+        window.__GM_setValue('yixin_token', newToken);  // 持久化到油猴存储
         updateTokenStatus();
         createNotification('Token已更新并保存!');
     }
@@ -2841,7 +2841,7 @@ async function sha256(message) {
 // 创建密码输入弹窗
 function createPasswordDialog(callback) {
     // 如果已验证过，直接跳过
-    const savedHash = GM_getValue('auth_hash', '');
+    const savedHash = window.__GM_getValue('auth_hash', '');
     if (savedHash === PASSWORD_HASH) {
         IS_AUTHENTICATED = true;
         callback();
@@ -2912,7 +2912,7 @@ function createPasswordDialog(callback) {
         if (hash === PASSWORD_HASH) {
             IS_AUTHENTICATED = true;
             if (rememberCheck.checked) {
-                GM_setValue('auth_hash', hash);
+                window.__GM_setValue('auth_hash', hash);
             }
             overlay.remove();
             callback();
@@ -2947,7 +2947,7 @@ function createPasswordDialog(callback) {
     }
 
     // 检查是否已有实例在运行
-    if (GM_getValue('helper_instance_active', false)) {
+    if (window.__GM_getValue('helper_instance_active', false)) {
         console.log('[易鑫云系统助手] 已有实例运行，跳过');
         return;
     }
@@ -2955,14 +2955,14 @@ function createPasswordDialog(callback) {
     // 先验证密码，通过后再初始化
     createPasswordDialog(function() {
         // 加锁
-        GM_setValue('helper_instance_active', true);
+        window.__GM_setValue('helper_instance_active', true);
 
         // 页面卸载时释放锁
         window.addEventListener('beforeunload', function() {
-            GM_setValue('helper_instance_active', false);
+            window.__GM_setValue('helper_instance_active', false);
         });
 
-        TOKEN = getTokenFromCookies() || GM_getValue('yixin_token', '') || TOKEN;
+        TOKEN = getTokenFromCookies() || window.__GM_getValue('yixin_token', '') || TOKEN;
         createHelperUI();
         createNotification('易鑫云系统助手已加载!');
     });
