@@ -1,4 +1,9 @@
 
+// == GM API兼容层 ==
+// 加载器通过unsafeWindow桥接了GM函数，这里统一取出来供全局使用
+const GM_setValue = window.__GM_setValue || function() {};
+const GM_getValue = window.__GM_getValue || function(k, d) { return d; };
+
 // == 全局配置 ==
 const BASE_URL = "https://ares.yxqiche.com";
 let TOKEN = "";
