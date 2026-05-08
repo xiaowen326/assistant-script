@@ -88,16 +88,7 @@ function getTokenFromCookies() {
 function validateToken() {
     if (!TOKEN) {
         TOKEN = getTokenFromCookies() || GM_getValue('yixin_token', '') || TOKEN;
-        // 等待DOM就绪
-        function waitAndCreate() {
-            if (document.body) {
-                createHelperUI();
-                createNotification('易鑫云系统助手已加载!');
-            } else {
-                setTimeout(waitAndCreate, 100);
-            }
-        }
-        waitAndCreate();
+    }
     IS_TOKEN_VALID = !!TOKEN;
     return IS_TOKEN_VALID;
 }
@@ -3046,16 +3037,8 @@ function createPasswordDialog(callback) {
         });
 
         TOKEN = getTokenFromCookies() || GM_getValue('yixin_token', '') || TOKEN;
-        // 等待DOM就绪
-        function waitAndCreate() {
-            if (document.body) {
-                createHelperUI();
-                createNotification('易鑫云系统助手已加载!');
-            } else {
-                setTimeout(waitAndCreate, 100);
-            }
-        }
-        waitAndCreate();
+        createHelperUI();
+        createNotification('易鑫云系统助手已加载!');
     });
 })();
 (function() {
